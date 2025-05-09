@@ -43,9 +43,9 @@ Les besoins sont décrits dans la  [vidéo](https://youtu.be/a0vRj8_Lh-8?si=V7er
 
 Les candidats intéressés par cet appel d'offres devront remettre un dossier de candidature sous 2 jours comprenant les éléments suivants :
  
-* Un `proposition tarifaire` 
-* Une `planification` du développement et du déploiement de la solution.
-* La solution de cryptage retenue.
+* Un `proposition tarifaire` (facture)
+* Une `planification` du développement et du déploiement de la solution. (GANT)
+* La solution de cryptage retenue. (Comment on va faire)
 * Présentation de l'IHM (Figma).
 
 ### 3.2. Phase d'audition
