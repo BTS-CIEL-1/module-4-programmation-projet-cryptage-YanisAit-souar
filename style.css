@@ -1,0 +1,69 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+}
+
+#logo {
+    height: 40px;
+    margin-right: 20px;
+}
+
+h1 {
+    flex-grow: 1;
+    text-align: center;
+    margin: 0;
+    font-size: 1.5em;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+}
+
+textarea {
+    width: 90%;
+    max-width: 600px;
+    height: 150px;
+    margin: 15px 0;
+    padding: 10px;
+    font-size: 1em;
+    resize: none;
+}
+
+.code-section {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+#codeInput {
+    padding: 10px;
+    font-size: 1em;
+    width: 200px;
+}
+
+#encryptBtn {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#encryptBtn:hover {
+    background-color: #0056b3;
+}
