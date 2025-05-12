@@ -1,84 +1,71 @@
-<!-- Documentation Emmet https://docs.emmet.io/cheat-sheet/ -->
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/style.css" />
-    <script src="js/script.js" defer></script>
-    <title>SpaceX</title>
-  </head>
-  <body>
-    <div id="overlay"></div>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cryptage - Bennour Industries</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
 
-     <!-- Menu Pour Mobile -->
-    <div id="mobile-menu" class="mobile-main-menu">
-      <ul>
-        <li><a href="#">Courses</a></li>
-        <li><a href="#">Shop</a></li>
-        <li class="mobile-only"><a href="index.html">Acceuil</a></li>
-        <li class="mobile-only"><a href="signup.html">SignUp</a></li>
-        <li class="mobile-only"><a href="signin.html">SignIn</a></li>
-      </ul>
+  <header class="main-header">
+    <div class="logo">
+      <a href="#"><img src="img/logo.png" alt="Bennour Industries" /></a>
     </div>
-
-     <!-- Header et Menu-->
-    <header class="main-header">
-      <div class="logo">
-        <a href="index.html">
-          <img src="img/logo.png" alt="SpaceX" />
-        </a>
-      </div>
-      <nav class="desktop-main-menu">
-        <ul>
-          <li><a href="index.html">Acceuil</a></li>
-          <li><a href="signin.html">Sign In</a></li>
-          <li><a href="signup.html">Sign Up</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <!-- Hamburger Menu -->
-    <button id="menu-btn" class="hamburger" type="button">
-      <span class="hamburger-top"></span>
-      <span class="hamburger-middle"></span>
-      <span class="hamburger-bottom"></span>
-    </button>
-
-    <!-- Section A -->
-    <section class="section-a">
-      <div class="section-inner">
-        <h4>Upcoming Launch</h4>
-        <h2>CRS-25 Mission</h2>
-        <a href="#" class="btn">
-          <div class="hover"></div>
-          <span>Rewatch</span>
-        </a>
-      </div>
-    </section>
-
-    
-    <!-- Section B -->
-    <section class="section-b">
-      <div class="section-inner">
-        <h4>Recent Launch</h4>
-        <h2>Globalstar FM15 Mission</h2>
-        <a href="#" class="btn">
-          <div class="hover"></div>
-          <span>Rewatch</span>
-        </a>
-      </div>
-    </section>
-
-    <footer>
+    <nav class="desktop-main-menu">
       <ul>
-        <li>SpaceX &copy; 2022</li>
-        <li><a href="#">Twitter</a></li>
-        <li><a href="#">YouTube</a></li>
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Décrypter</a></li>
+        <li><a href="#">Contact</a></li>
       </ul>
-    </footer>
-  </body>
+    </nav>
+  </header>
+
+  <main class="contact-clean">
+    <h2>Texte, crypter, partage. La confidentialité n'a jamais été aussi accessible.</h2>
+
+    <form>
+      <div class="form-group">
+        <textarea class="form-control" placeholder="Textarea du texte a Crypter"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Chiffre de cryptage :</label>
+        <input class="form-control" type="text" placeholder="ex: 15" />
+      </div>
+
+      <div class="form-group">
+        <label>Phrase de cryptage :</label>
+        <input class="form-control" type="text" placeholder="Votre phrase secrète" />
+      </div>
+
+      <button class="btn btn-primary" type="button">Lancer le Cryptage</button>
+
+      <div class="form-group">
+        <textarea class="form-control" placeholder="Texte Crypté" readonly></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Phrase utilisée pour crypter :</label>
+        <input class="form-control" type="text" readonly />
+      </div>
+
+      <div class="form-group">
+        <label>Chiffre utilisé pour crypter :</label>
+        <input class="form-control" type="text" readonly />
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    <ul>
+      <li>Cryptéo &copy; 2025</li>
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">Mail</a></li>
+      <li><a href="#">Facebook</a></li>
+      <li><a href="#">LinkedIn</a></li>
+      <li><a href="#">Youtube</a></li>
+    </ul>
+  </footer>
+
+</body>
 </html>
