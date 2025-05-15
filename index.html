@@ -1,16 +1,41 @@
-<!-- Documentation Emmet https://docs.emmet.io/cheat-sheet/ -->
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cryptage de Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <img src="logo.png" alt="Logo" id="logo">
-        <h1>Cryptage de Documents</h1>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/script.js" defer></script>
+    <title>SpaceX</title>
+  </head>
+  <body>
+    <div id="overlay"></div>
+
+     <!-- Menu Pour Mobile -->
+    <div id="mobile-menu" class="mobile-main-menu">
+      <ul>
+        <li><a href="#">Courses</a></li>
+        <li><a href="#">Shop</a></li>
+        <li class="mobile-only"><a href="index.html">Acceuil</a></li>
+        <li class="mobile-only"><a href="signup.html">SignUp</a></li>
+        <li class="mobile-only"><a href="signin.html">SignIn</a></li>
+      </ul>
+    </div>
+
+     <!-- Header et Menu-->
+    <header class="main-header">
+      <div class="logo">
+        <a href="index.html">
+          <img src="img/logo.png" alt="SpaceX" />
+        </a>
+      </div>
+      <nav class="desktop-main-menu">
+        <ul>
+          <li><a href="index.html">Acceuil</a></li>
+          <li><a href="signin.html">Sign In</a></li>
+          <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+      </nav>
     </header>
 
     <!-- Hamburger Menu -->
@@ -30,29 +55,32 @@
           <span>Rewatch</span>
         </a>
       </div>
-    </section>
 
-    
-    <!-- Section B -->
-    <section class="section-b">
-      <div class="section-inner">
-        <h4>Recent Launch</h4>
-        <h2>Globalstar FM15 Mission</h2>
-        <a href="#" class="btn">
-          <div class="hover"></div>
-          <span>Rewatch</span>
-        </a>
+      <div class="form-row">
+        <label>Phrase utilisée pour crypter :</label>
+        <input type="text" readonly />
       </div>
-    </section>
 
-    <footer>
-      <ul>
-        <li>SpaceX &copy; 2022</li>
-        <li><a href="#">Twitter</a></li>
-        <li><a href="#">YouTube</a></li>
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">LinkedIn</a></li>
-      </ul>
-    </footer>
-  </body>
+      <div class="form-row">
+        <label>Chiffre utilisé pour crypter :</label>
+        <input type="text" readonly />
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    <div class="logo">
+      <a href="#"><img src="img/logo.png" alt="Bennour Industries" /></a>
+    </div>
+    <ul>
+      <li>Cryptéo©2023</li>
+      <li><a href="#">X</a></li>
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">Mail</a></li>
+      <li><a href="#">Facebook</a></li>
+      <li><a href="#">LinkedIn</a></li>
+      <li><a href="#">YouTube</a></li>
+    </ul>
+  </footer>
+</body>
 </html>
