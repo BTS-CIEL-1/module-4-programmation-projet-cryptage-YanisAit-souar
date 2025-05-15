@@ -135,3 +135,28 @@ function verifierFormulaire(){
     checkboxLabel.classList.remove("is-invalid-checkbox-text"); 
   }
 }
+// solution de cryptage
+        function crypter() {
+            const phrase = document.getElementById('phrase').value;
+            const decalage = parseInt(document.getElementById('decalage').value);
+            
+            const resultat = transformerTexte(phrase, decalage);
+            document.getElementById('resultat').textContent = resultat;
+        }
+        
+        function transformerTexte(texte, decalage) {
+            let resultat = '';
+            
+            for (let i = 0; i < texte.length; i++) {
+                // Récupérer le code ASCII du caractère
+                const codeAscii = texte.charCodeAt(i);
+                
+                // Appliquer le décalage
+                let nouveauCode = codeAscii + decalage;
+                
+                // Convertir le nouveau code en caractère et l'ajouter au résultat
+                resultat += String.fromCharCode(nouveauCode);
+            }
+            
+            return resultat;
+        }
