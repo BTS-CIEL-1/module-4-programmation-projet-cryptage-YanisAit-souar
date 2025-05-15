@@ -143,6 +143,14 @@ function verifierFormulaire(){
             const resultat = transformerTexte(phrase, decalage);
             document.getElementById('resultat').textContent = resultat;
         }
+                
+        function decrypter() {
+            const phrase = document.getElementById('phrase').value;
+            const decalage = parseInt(document.getElementById('decalage').value);
+            
+            const resultat = transformerTexte(phrase, -decalage);
+            document.getElementById('resultat').textContent = resultat;
+        }
         
         function transformerTexte(texte, decalage) {
             let resultat = '';
