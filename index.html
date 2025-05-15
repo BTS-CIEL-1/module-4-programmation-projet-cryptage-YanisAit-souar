@@ -1,11 +1,11 @@
-<!-- Documentation Emmet https://docs.emmet.io/cheat-sheet/ -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cryptage de Document</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="script.js"></script>
 </head>
 <body>
     <header>
@@ -15,44 +15,54 @@
 
     <!-- Hamburger Menu -->
     <button id="menu-btn" class="hamburger" type="button">
-      <span class="hamburger-top"></span>
-      <span class="hamburger-middle"></span>
-      <span class="hamburger-bottom"></span>
+        <span class="hamburger-top"></span>
+        <span class="hamburger-middle"></span>
+        <span class="hamburger-bottom"></span>
     </button>
 
     <!-- Section A -->
     <section class="section-a">
-      <div class="section-inner">
-        <h4>Upcoming Launch</h4>
-        <h2>CRS-25 Mission</h2>
-        <a href="#" class="btn">
-          <div class="hover"></div>
-          <span>Rewatch</span>
-        </a>
-      </div>
+        <div class="section-inner">
+            <h4>Upcoming Launch</h4>
+            <h2>CRS-25 Mission</h2>
+            <a href="#" class="btn">
+                <div class="hover"></div>
+                <span>Rewatch</span>
+            </a>
+        </div>
     </section>
 
-    
     <!-- Section B -->
     <section class="section-b">
-      <div class="section-inner">
-        <h4>Recent Launch</h4>
-        <h2>Globalstar FM15 Mission</h2>
-        <a href="#" class="btn">
-          <div class="hover"></div>
-          <span>Rewatch</span>
-        </a>
-      </div>
+        <div class="section-inner">
+            <h4>Recent Launch</h4>
+            <h2>Globalstar FM15 Mission</h2>
+            <a href="#" class="btn">
+                <div class="hover"></div>
+                <span>Rewatch</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Cryptage Section -->
+    <section class="cryptage-section">
+        <div class="section-inner">
+            <h2>Cryptage de Phrase</h2>
+            <textarea id="inputText" placeholder="Entrez votre texte ici..." rows="4" cols="50"></textarea><br><br>
+            <button id="encryptButton">Crypter la phrase</button>
+            <h3>Phrase cryptée :</h3>
+            <p id="encryptedText"></p>
+        </div>
     </section>
 
     <footer>
-      <ul>
-        <li>SpaceX &copy; 2022</li>
-        <li><a href="#">Twitter</a></li>
-        <li><a href="#">YouTube</a></li>
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">LinkedIn</a></li>
-      </ul>
+        <ul>
+            <li>SpaceX &copy; 2022</li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">YouTube</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">LinkedIn</a></li>
+        </ul>
     </footer>
-  </body>
+</body>
 </html>
