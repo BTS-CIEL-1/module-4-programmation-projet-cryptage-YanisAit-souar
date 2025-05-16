@@ -1,79 +1,51 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cryptéo - Bennour Industries</title>
-  <link rel="stylesheet" href="css/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptage de Texte</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <a href="#"><img src="img/logo.png" alt="Bennour Industries" /></a>
+    <div class="container">
+        <h1>Texte, crypter, partager. La confidentialité n'a jamais été aussi accessible.</h1>
+        
+        <div class="input-group">
+            <textarea id="inputText" placeholder="Entrez votre texte ici..." rows="5"></textarea>
+            <div class="char-count"><span id="charCount">0</span> caractères</div>
+        </div>
+        
+        <div class="input-group">
+            <label for="cryptKey">Chiffre de cryptage :</label>
+            <div class="key-wrapper">
+                <input type="number" id="cryptKey" value="2" min="1">
+                <button id="keyLock" class="key-btn">🔒</button>
+            </div>
+        </div>
+        
+        <div class="action-group">
+            <button id="encryptButton" class="main-btn">Lancer le Cryptage 🔒</button>
+        </div>
+        
+        <div class="output-group">
+            <label>Texte Crypté</label>
+            <textarea id="outputText" readonly rows="5"></textarea>
+            <button id="copyButton" class="copy-btn">📋</button>
+        </div>
+        
+        <div class="info-group">
+            <div class="info-item">
+                <label>Phrase utilisée :</label>
+                <div id="usedPhrase" class="info-value"></div>
+            </div>
+            
+            <div class="info-item">
+                <label>Chiffre utilisé :</label>
+                <div id="usedKey" class="info-value"></div>
+            </div>
+        </div>
     </div>
-    <nav class="main-menu">
-      <ul>
-        <li><a href="#">Décrypter</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main>
-    <p class="intro-text">
-      Bienvenue sur le site de cryptage et le SERVICE DÉCRYPTER. Le système encrypte (crypter) et décrypte pour préfixer leurs textes variables. Ces fonctionnalités sont disponibles gratuitement et peuvent être utilisées par n'importe qui. Le cryptage modifie votre message pour que seuls ceux qui disposent de la clé puissent le comprendre.
-    </p>
-
-    <p class="tagline">Texte, crypter, partager. La confidentialité n'a jamais été aussi accessible.</p>
-
-    <form>
-      <div class="form-group">
-        <textarea placeholder="Texte à crypter"></textarea>
-      </div>
-
-      <div class="form-row">
-        <label>Chiffre de cryptage :</label>
-        <input type="text" placeholder="ex: 15" />
-      </div>
-
-      <div class="form-row">
-        <label>Phrase de cryptage :</label>
-        <input type="text" placeholder="Votre phrase secrète" />
-      </div>
-
-      <div class="button-container">
-        <button class="btn-primary" type="button">Lancer le Cryptage</button>
-      </div>
-
-      <div class="form-group">
-        <textarea placeholder="Texte Crypté" readonly></textarea>
-      </div>
-
-      <div class="form-row">
-        <label>Phrase utilisée pour crypter :</label>
-        <input type="text" readonly />
-      </div>
-
-      <div class="form-row">
-        <label>Chiffre utilisé pour crypter :</label>
-        <input type="text" readonly />
-      </div>
-    </form>
-  </main>
-
-  <footer>
-    <div class="logo">
-      <a href="#"><img src="img/logo.png" alt="Bennour Industries" /></a>
-    </div>
-    <ul>
-      <li>Cryptéo©2023</li>
-      <li><a href="#">X</a></li>
-      <li><a href="#">Instagram</a></li>
-      <li><a href="#">Mail</a></li>
-      <li><a href="#">Facebook</a></li>
-      <li><a href="#">LinkedIn</a></li>
-      <li><a href="#">YouTube</a></li>
-    </ul>
-  </footer>
+    
+    <script src="script.js"></script>
 </body>
 </html>

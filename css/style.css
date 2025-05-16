@@ -1,180 +1,148 @@
+/* Variables de couleurs et styles généraux */
+:root {
+    --primary-color: #0d6efd;
+    --light-bg: #f8f9fa;
+    --border-color: #dee2e6;
+    --text-dark: #343a40;
+    --text-light: #6c757d;
+}
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f5f5f5;
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+    background-color: #f5f5f5;
+    color: var(--text-dark);
+    line-height: 1.6;
+    padding: 20px;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Header */
-header {
-  background: #ffffff;
-  border-bottom: 2px solid #000;
-  padding: 15px 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--text-dark);
+    font-size: 24px;
+    font-weight: 600;
 }
 
-.logo img {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
+/* Groupes d'éléments */
+.input-group, .output-group, .action-group, .info-group {
+    margin-bottom: 20px;
 }
 
-.main-menu ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
+/* Champs de texte */
+textarea, input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--light-bg);
+    font-size: 16px;
+    resize: none;
 }
 
-.main-menu a {
-  font-weight: bold;
-  color: #000;
-  transition: color 0.3s;
+textarea:focus, input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
 }
 
-.main-menu a:hover {
-  color: #0457da;
+/* Compteur de caractères */
+.char-count {
+    text-align: left;
+    margin-top: 5px;
+    font-size: 14px;
+    color: var(--text-light);
 }
 
-/* Main Content */
-main {
-  flex: 1;
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(4px);
+/* Boutons */
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
 
-.intro-text {
-  font-size: 1rem;
-  margin-bottom: 20px;
-  text-align: justify;
+.main-btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    margin: 0 auto;
 }
 
-.tagline {
-  text-align: center;
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-bottom: 30px;
+.main-btn:hover {
+    background-color: #0b5ed7;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+/* Section du chiffre de cryptage */
+.key-wrapper {
+    display: flex;
+    align-items: center;
 }
 
-.form-group,
-.form-row {
-  display: flex;
-  flex-direction: column;
+.key-btn {
+    background-color: transparent;
+    font-size: 20px;
+    margin-left: 10px;
+    padding: 5px 10px;
+}
+
+/* Section de sortie */
+.output-group {
+    position: relative;
+}
+
+.copy-btn {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background-color: transparent;
+    font-size: 20px;
+}
+
+/* Section d'informations */
+.info-group {
+    margin-top: 25px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+.info-item {
+    margin-bottom: 10px;
+}
+
+.info-value {
+    background-color: var(--light-bg);
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-top: 5px;
+    font-size: 15px;
+    min-height: 38px;
 }
 
 label {
-  font-size: 0.9rem;
-  font-weight: bold;
-  border: 1px solid #000;
-  padding: 5px 10px;
-  display: inline-block;
-  margin-bottom: 5px;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-dark);
 }
 
-input,
-textarea {
-  font-size: 1rem;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: #eaeaea;
-}
-
-textarea {
-  resize: none;
-  height: 120px;
-}
-
-.button-container {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.btn-primary {
-  background-color: #0457da;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: #033e8c;
-}
-
-/* Footer */
-footer {
-  background: #ffffff;
-  border-top: 2px solid #000;
-  padding: 20px 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-footer .logo img {
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-footer ul {
-  list-style: none;
-  display: flex;
-  gap: 15px;
-  margin: 10px auto;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-footer ul li:first-child {
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-footer ul li:not(:first-child) {
-  font-weight: bold;
-}
-
-@media (max-width: 600px) {
-  header,
-  footer {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .main-menu ul,
-  footer ul {
-    flex-direction: column;
-    gap: 10px;
-  }
+#outputText {
+    background-color: #f8f9fa;
 }
