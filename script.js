@@ -8,7 +8,7 @@ const copyButton = document.getElementById('copyButton');
 const keyLock = document.getElementById('keyLock');
 const usedPhrase = document.getElementById('usedPhrase');
 const usedKey = document.getElementById('usedKey');
-const phraseCrypter = document.getElementById('phraseCrypter'); // Champ HTML ajouté
+const phraseCrypter = document.getElementById('phraseCrypter'); 
 
 let isKeyLocked = false;
 

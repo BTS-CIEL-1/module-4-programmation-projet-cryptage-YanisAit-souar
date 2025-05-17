@@ -11,48 +11,35 @@
         <h1>Texte, décrypter, partager. La confidentialité n'a jamais été aussi accessible.</h1>
         
         <div class="input-group">
-            <textarea id="inputText" placeholder="Entrez votre texte ici..." rows="5"></textarea>
+            <textarea id="encryptedText" placeholder="Entrez le texte chiffré ici..." rows="5"></textarea>
             <div class="char-count"><span id="charCount">0</span> caractères</div>
         </div>
         
         <div class="input-group">
-            <label for="cryptKey">Chiffre de décryptage :</label>
+            <label for="decryptKey">Chiffre de décryptage (César) :</label>
             <div class="key-wrapper">
-                <input type="number" id="cryptKey" value="2" min="1">
-                <button id="keyLock" class="key-btn">🔒</button>
+                <input type="number" id="decryptKey" min="1">
             </div>
         </div>
+
         <div class="input-group">
-            <label for="phraseCrypter">Phrase de décryptage :</label>
+            <label for="decryptPhrase">Phrase de décryptage (Vigenère) :</label>
             <div class="key-wrapper">
-            <input type="text" id="phraseCrypter" placeholder="Entrez une phrase de cryptage"> 
-            <button id="keyLock" class="key-btn">🔒</button>
+                <input type="text" id="decryptPhrase" placeholder="Entrez une phrase de décryptage"> 
             </div>
         </div>
         
         <div class="action-group">
-            <button id="encryptButton" class="main-btn">Lancer le Décryptage 🔒</button>
+            <button onclick="decryptText()" class="main-btn">Lancer le Décryptage 🔓</button>
         </div>
         
         <div class="output-group">
-            <label>Texte Décrypté</label>
-            <textarea id="outputText" readonly rows="5"></textarea>
-            <button id="copyButton" class="copy-btn">📋</button>
-        </div>
-        
-        <div class="info-group">
-            <div class="info-item">
-                <label>Phrase utilisée :</label>
-                <div id="usedPhrase" class="info-value"></div>
-            </div>
-            
-            <div class="info-item">
-                <label>Chiffre utilisé :</label>
-                <div id="usedKey" class="info-value"></div>
-            </div>
+            <label>Texte Décrypté :</label>
+            <textarea id="decryptedOutput" readonly rows="5"></textarea>
+            <button onclick="copyDecryptedText()" class="copy-btn">📋</button>
         </div>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script src="script2.js"></script>
 </body>
 </html>
