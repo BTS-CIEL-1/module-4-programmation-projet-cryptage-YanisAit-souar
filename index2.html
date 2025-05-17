@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cryptage de Texte</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Décryptage de Texte</title>
+    <link rel="stylesheet" href="css/style2.css">
 </head>
 <body>
     <div class="container">
-        <h1>Texte, crypter, partager. La confidentialité n'a jamais été aussi accessible.</h1>
+        <h1>Texte, décrypter, partager. La confidentialité n'a jamais été aussi accessible.</h1>
         
         <div class="input-group">
             <textarea id="inputText" placeholder="Entrez votre texte ici..." rows="5"></textarea>
@@ -16,14 +16,14 @@
         </div>
         
         <div class="input-group">
-            <label for="cryptKey">Chiffre de cryptage :</label>
+            <label for="cryptKey">Chiffre de décryptage :</label>
             <div class="key-wrapper">
                 <input type="number" id="cryptKey" value="2" min="1">
                 <button id="keyLock" class="key-btn">🔒</button>
             </div>
         </div>
         <div class="input-group">
-            <label for="phraseCrypter">Phrase de cryptage :</label>
+            <label for="phraseCrypter">Phrase de décryptage :</label>
             <div class="key-wrapper">
             <input type="text" id="phraseCrypter" placeholder="Entrez une phrase de cryptage"> 
             <button id="keyLock" class="key-btn">🔒</button>
@@ -31,11 +31,11 @@
         </div>
         
         <div class="action-group">
-            <button id="encryptButton" class="main-btn">Lancer le Cryptage 🔒</button>
+            <button id="encryptButton" class="main-btn">Lancer le Décryptage 🔒</button>
         </div>
         
         <div class="output-group">
-            <label>Texte Crypté</label>
+            <label>Texte Décrypté</label>
             <textarea id="outputText" readonly rows="5"></textarea>
             <button id="copyButton" class="copy-btn">📋</button>
         </div>

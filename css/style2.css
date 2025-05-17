@@ -1,0 +1,148 @@
+/* Variables de couleurs et styles généraux */
+:root {
+    --primary-color: #0d6efd;
+    --light-bg: #f8f9fa;
+    --border-color: #dee2e6;
+    --text-dark: #343a40;
+    --text-light: #6c757d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: var(--text-dark);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--text-dark);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Groupes d'éléments */
+.input-group, .output-group, .action-group, .info-group {
+    margin-bottom: 20px;
+}
+
+/* Champs de texte */
+textarea, input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--light-bg);
+    font-size: 16px;
+    resize: none;
+}
+
+textarea:focus, input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+/* Compteur de caractères */
+.char-count {
+    text-align: left;
+    margin-top: 5px;
+    font-size: 14px;
+    color: var(--text-light);
+}
+
+/* Boutons */
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.main-btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    margin: 0 auto;
+}
+
+.main-btn:hover {
+    background-color: #0b5ed7;
+}
+
+/* Section du chiffre de cryptage */
+.key-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.key-btn {
+    background-color: transparent;
+    font-size: 20px;
+    margin-left: 10px;
+    padding: 5px 10px;
+}
+
+/* Section de sortie */
+.output-group {
+    position: relative;
+}
+
+.copy-btn {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background-color: transparent;
+    font-size: 20px;
+}
+
+/* Section d'informations */
+.info-group {
+    margin-top: 25px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+.info-item {
+    margin-bottom: 10px;
+}
+
+.info-value {
+    background-color: var(--light-bg);
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-top: 5px;
+    font-size: 15px;
+    min-height: 38px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+#outputText {
+    background-color: #f8f9fa;
+}
