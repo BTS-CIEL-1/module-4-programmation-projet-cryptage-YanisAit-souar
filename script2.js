@@ -1,4 +1,6 @@
-// Fonction de déchiffrement César
+let fileContent = ""; // Contenu du fichier texte
+
+// Déchiffrement César
 function caesarDecrypt(text, shift) {
     shift = parseInt(shift, 10);
     if (isNaN(shift)) {
@@ -18,7 +20,7 @@ function caesarDecrypt(text, shift) {
     }).join('');
 }
 
-// Fonction de déchiffrement Vigenère ASCII
+// Déchiffrement Vigenère ASCII
 function vigenereDecrypt(text, key) {
     if (!key) {
         alert("Veuillez entrer une phrase de décryptage.");
@@ -34,33 +36,69 @@ function vigenereDecrypt(text, key) {
     return result;
 }
 
-// Fonction principale de déchiffrement
+// Déchiffrement principal
 function decryptText() {
-    const encryptedText = document.getElementById('encryptedText').value.trim();
+    const typedText = document.getElementById('encryptedText').value.trim();
     const caesarKey = document.getElementById('decryptKey').value.trim();
     const vigenereKey = document.getElementById('decryptPhrase').value.trim();
     const output = document.getElementById('decryptedOutput');
 
-    if (!encryptedText) {
-        alert("Veuillez entrer un texte à décrypter.");
+    const textToDecrypt = fileContent ? fileContent.trim() : typedText;
+
+    if (!textToDecrypt) {
+        alert("Veuillez entrer un texte ou charger un fichier à décrypter.");
         return;
     }
 
     if (caesarKey && vigenereKey) {
-        alert("Utilisez uniquement une seule clé : chiffre pour César ou phrase pour Vigenère.");
+        alert("Veuillez utiliser une seule méthode de décryptage à la fois.");
         return;
     }
 
     let result = "";
 
     if (vigenereKey) {
-        result = vigenereDecrypt(encryptedText, vigenereKey);
+        result = vigenereDecrypt(textToDecrypt, vigenereKey);
     } else if (caesarKey) {
-        result = caesarDecrypt(encryptedText, caesarKey);
+        result = caesarDecrypt(textToDecrypt, caesarKey);
     } else {
-        alert("Veuillez entrer une clé de décryptage.");
+        alert("Veuillez fournir une clé de décryptage.");
         return;
     }
 
     output.value = result;
 }
+// la partie fichier deposer decrypter //
+// Chargement du fichier
+function handleFileUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        fileContent = event.target.result;
+        alert("Fichier chargé avec succès !");
+    };
+    reader.readAsText(file);
+}
+
+
+// Copier le texte déchiffré
+function copyDecryptedText() {
+    const output = document.getElementById('decryptedOutput');
+    if (!output.value) {
+        alert("Aucun texte à copier.");
+        return;
+    }
+    output.select();
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    alert("Texte copié dans le presse-papiers.");
+}
+
+
+// Initialisation
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+});
