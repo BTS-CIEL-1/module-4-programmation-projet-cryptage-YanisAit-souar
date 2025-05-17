@@ -8,20 +8,15 @@ const copyButton = document.getElementById('copyButton');
 const keyLock = document.getElementById('keyLock');
 const usedPhrase = document.getElementById('usedPhrase');
 const usedKey = document.getElementById('usedKey');
+const phraseCrypter = document.getElementById('phraseCrypter'); // Champ HTML ajouté
 
-// 👉 AJOUT : Sélection du champ phraseCrypter
-const phraseCrypter = document.getElementById('phraseCrypter'); // Champ HTML à ajouter
-
-// Variables de l'application
 let isKeyLocked = false;
 
-// Fonction de mise à jour du compteur de caractères
 function updateCharCount() {
     const count = inputText.value.length;
     charCount.textContent = count;
 }
 
-// Fonction de cryptage César 
 function caesarCipher(text, shift) {
     shift = parseInt(shift, 10);
     if (isNaN(shift)) {
@@ -29,7 +24,7 @@ function caesarCipher(text, shift) {
         return "";
     }
     shift = shift % 26;
-    
+
     return text.split('').map(char => {
         const code = char.charCodeAt(0);
         if (code >= 65 && code <= 90) {
@@ -42,7 +37,6 @@ function caesarCipher(text, shift) {
     }).join('');
 }
 
-// 👉 AJOUT : Fonction de chiffrement façon Vigenère ASCII
 function vigenereCipher(text, key) {
     if (!key) {
         alert("Veuillez entrer une phrase de cryptage.");
@@ -59,11 +53,10 @@ function vigenereCipher(text, key) {
     return result;
 }
 
-// 🔄 MODIFIÉ : Fonction de cryptage du texte
 function encryptText() {
-    const text = inputText.value;
-    const shift = cryptKey.value;
-    const phrase = phraseCrypter ? phraseCrypter.value : "";
+    const text = inputText.value.trim();
+    const shift = cryptKey.value.trim();
+    const phrase = phraseCrypter ? phraseCrypter.value.trim() : "";
     let result;
 
     if (!text) {
@@ -71,35 +64,37 @@ function encryptText() {
         return;
     }
 
+    // ❌ Empêcher l'utilisation des deux clés en même temps
+    if (shift && phrase) {
+        alert("Veuillez utiliser uniquement une seule clé de cryptage : soit un chiffre, soit une phrase, mais pas les deux.🙂");
+        return;
+    }
+
     if (phrase) {
-        // 👉 Si une phrase est fournie, on utilise Vigenère
         result = vigenereCipher(text, phrase);
-        cryptKey.value = ""; // On ignore le chiffre si phrase utilisée
         usedKey.textContent = phrase;
-    } else {
-        if (!shift || shift < 1) {
-            alert("Veuillez entrer un chiffre de cryptage valide (supérieur ou égal à 1).");
-            return;
-        }
+    } else if (shift) {
         result = caesarCipher(text, shift);
         usedKey.textContent = shift;
+    } else {
+        alert("Veuillez entrer une clé de cryptage (chiffre ou phrase).");
+        return;
     }
 
     outputText.value = result;
     usedPhrase.textContent = text;
 }
 
-// Fonction pour copier le texte crypté
 function copyToClipboard() {
     if (!outputText.value) {
         alert("Aucun texte crypté à copier.");
         return;
     }
-    
+
     outputText.select();
     document.execCommand('copy');
     window.getSelection().removeAllRanges();
-    
+
     const originalText = copyButton.textContent;
     copyButton.textContent = "✓";
     setTimeout(() => {
@@ -107,11 +102,10 @@ function copyToClipboard() {
     }, 1500);
 }
 
-// Fonction pour verrouiller/déverrouiller la clé de cryptage
 function toggleKeyLock() {
     isKeyLocked = !isKeyLocked;
     cryptKey.disabled = isKeyLocked;
-    
+
     if (isKeyLocked) {
         keyLock.textContent = "🔒";
         keyLock.title = "Déverrouiller le chiffre";
@@ -121,11 +115,9 @@ function toggleKeyLock() {
     }
 }
 
-// Ajout des écouteurs d'événements
 inputText.addEventListener('input', updateCharCount);
 encryptButton.addEventListener('click', encryptText);
 copyButton.addEventListener('click', copyToClipboard);
 keyLock.addEventListener('click', toggleKeyLock);
 
-// Initialisation du compteur de caractères
 updateCharCount();
