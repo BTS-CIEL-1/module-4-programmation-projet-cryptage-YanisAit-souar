@@ -1,4 +1,15 @@
-let fileContent = ""; // Contenu du fichier texte
+// Sélection des éléments DOM
+const encryptedText = document.getElementById('encryptedText');
+const fileInput = document.getElementById('fileInput');
+const decryptKey = document.getElementById('decryptKey');
+const decryptPhrase = document.getElementById('decryptPhrase');
+const decryptedOutput = document.getElementById('decryptedOutput');
+const usedPhrase = document.getElementById('usedPhrase');
+const usedKey = document.getElementById('usedKey');
+const charCount = document.getElementById('charCount');
+
+// Variable pour stocker le contenu du fichier
+let fileContent = "";
 
 // Déchiffrement César
 function caesarDecrypt(text, shift) {
@@ -7,98 +18,187 @@ function caesarDecrypt(text, shift) {
         alert("Le chiffre de décryptage doit être un nombre valide.");
         return "";
     }
-    shift = shift % 26;
+    
+    // Normaliser le décalage pour qu'il soit toujours positif
+    shift = ((shift % 26) + 26) % 26;
+    
     return text.split('').map(char => {
         const code = char.charCodeAt(0);
-        if (code >= 65 && code <= 90) {
+        if (code >= 65 && code <= 90) { // Lettres majuscules
             return String.fromCharCode(((code - 65 - shift + 26) % 26) + 65);
-        } else if (code >= 97 && code <= 122) {
+        } else if (code >= 97 && code <= 122) { // Lettres minuscules
             return String.fromCharCode(((code - 97 - shift + 26) % 26) + 97);
         } else {
-            return char;
+            return char; // Caractères non alphabétiques
         }
     }).join('');
 }
 
 // Déchiffrement Vigenère ASCII
 function vigenereDecrypt(text, key) {
-    if (!key) {
-        alert("Veuillez entrer une phrase de décryptage.");
+    if (!key || key.trim() === "") {
+        alert("Veuillez entrer une phrase de décryptage valide.");
         return "";
     }
+    
     let result = "";
     for (let i = 0; i < text.length; i++) {
         const charCode = text.charCodeAt(i);
         const keyCharCode = key.charCodeAt(i % key.length);
+        // Ajout de 256 pour éviter les nombres négatifs
         const decryptedCharCode = (charCode - keyCharCode + 256) % 256;
         result += String.fromCharCode(decryptedCharCode);
     }
     return result;
 }
 
-// Déchiffrement principal
+// Fonction principale de décryptage
 function decryptText() {
-    const typedText = document.getElementById('encryptedText').value.trim();
-    const caesarKey = document.getElementById('decryptKey').value.trim();
-    const vigenereKey = document.getElementById('decryptPhrase').value.trim();
-    const output = document.getElementById('decryptedOutput');
-
-    const textToDecrypt = fileContent ? fileContent.trim() : typedText;
-
-    if (!textToDecrypt) {
+    const textFromInput = encryptedText.value.trim();
+    const caesarShift = decryptKey.value.trim();
+    const vigenereKey = decryptPhrase.value.trim();
+    
+    // Déterminer la source du texte à décrypter (champ de texte ou fichier)
+    let textToDecrypt = "";
+    let sourceInfo = "";
+    
+    if (fileContent && fileInput.files[0]) {
+        textToDecrypt = fileContent;
+        sourceInfo = fileInput.files[0].name; // Nom du fichier
+    } else if (textFromInput) {
+        textToDecrypt = textFromInput;
+        sourceInfo = textFromInput.length > 30 ? 
+                     textFromInput.substring(0, 30) + "..." : 
+                     textFromInput; // Affiche les 30 premiers caractères du texte
+    } else {
         alert("Veuillez entrer un texte ou charger un fichier à décrypter.");
         return;
     }
-
-    if (caesarKey && vigenereKey) {
-        alert("Veuillez utiliser une seule méthode de décryptage à la fois.");
+    
+    // Vérifier qu'une seule méthode de décryptage est utilisée
+    if (caesarShift && vigenereKey) {
+        alert("Veuillez utiliser une seule méthode de décryptage à la fois (chiffre ou phrase).");
         return;
     }
-
+    
+    // Vérifier qu'au moins une méthode de décryptage est spécifiée
+    if (!caesarShift && !vigenereKey) {
+        alert("Veuillez fournir une clé de décryptage (chiffre ou phrase).");
+        return;
+    }
+    
+    // Effectuer le décryptage approprié
     let result = "";
-
     if (vigenereKey) {
         result = vigenereDecrypt(textToDecrypt, vigenereKey);
-    } else if (caesarKey) {
-        result = caesarDecrypt(textToDecrypt, caesarKey);
+        usedKey.textContent = vigenereKey;
     } else {
-        alert("Veuillez fournir une clé de décryptage.");
-        return;
+        result = caesarDecrypt(textToDecrypt, caesarShift);
+        usedKey.textContent = caesarShift;
     }
-
-    output.value = result;
+    
+    // Afficher le résultat et mettre à jour les informations
+    decryptedOutput.value = result;
+    usedPhrase.textContent = sourceInfo;
 }
-// la partie fichier deposer decrypter //
-// Chargement du fichier
+
+// Fonction pour gérer le chargement d'un fichier
 function handleFileUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
-
-
+    
+    // Effacer le texte saisi manuellement
+    encryptedText.value = "";
+    updateCharCount();
+    
     const reader = new FileReader();
-    reader.onload = function (event) {
+    reader.onload = function(event) {
         fileContent = event.target.result;
-        alert("Fichier chargé avec succès !");
+        // Afficher le nom du fichier dans la section d'informations
+        usedPhrase.textContent = file.name;
+        alert("Fichier chargé avec succès : " + file.name);
+    };
+    reader.onerror = function() {
+        alert("Erreur lors de la lecture du fichier.");
+        fileInput.value = "";
+        fileContent = "";
+        usedPhrase.textContent = "";
     };
     reader.readAsText(file);
 }
 
-
-// Copier le texte déchiffré
+// Fonction pour copier le texte décrypté
 function copyDecryptedText() {
-    const output = document.getElementById('decryptedOutput');
-    if (!output.value) {
-        alert("Aucun texte à copier.");
+    if (!decryptedOutput.value) {
+        alert("Aucun texte décrypté à copier.");
         return;
     }
-    output.select();
+    
+    decryptedOutput.select();
     document.execCommand('copy');
     window.getSelection().removeAllRanges();
-    alert("Texte copié dans le presse-papiers.");
+    
+    // Feedback visuel
+    const copyBtn = document.querySelector('.copy-btn');
+    const originalText = copyBtn.textContent;
+    copyBtn.textContent = "✓";
+    setTimeout(() => {
+        copyBtn.textContent = originalText;
+    }, 1500);
 }
 
+// Fonction pour mettre à jour le compteur de caractères
+function updateCharCount() {
+    const count = encryptedText.value.length;
+    charCount.textContent = count;
+}
 
-// Initialisation
+// Fonction pour verrouiller/déverrouiller les champs de clé
+function toggleKeyLock(keyInput, lockButton) {
+    const isLocked = keyInput.disabled;
+    keyInput.disabled = !isLocked;
+    
+    if (isLocked) {
+        lockButton.textContent = "🔓";
+        lockButton.title = "Verrouiller";
+    } else {
+        lockButton.textContent = "🔒";
+        lockButton.title = "Déverrouiller";
+    }
+}
+
+// Réinitialiser le contenu du fichier quand on écrit du texte
+encryptedText.addEventListener('input', function() {
+    if (this.value.trim() !== '') {
+        fileInput.value = '';
+        fileContent = "";
+        
+        // Mettre à jour la section d'informations avec le texte saisi
+        const textPreview = this.value.trim();
+        usedPhrase.textContent = textPreview.length > 30 ? 
+                               textPreview.substring(0, 30) + "..." : 
+                               textPreview;
+    }
+    updateCharCount();
+});
+
+// Écouteurs d'événements
 window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+    // Écouteur pour le chargement de fichier
+    fileInput.addEventListener('change', handleFileUpload);
+    
+    // Écouteur pour le compteur de caractères
+    encryptedText.addEventListener('input', updateCharCount);
+    
+    // Écouteurs pour les boutons de verrouillage
+    const keyLockButtons = document.querySelectorAll('#keyLock');
+    keyLockButtons.forEach((button, index) => {
+        button.addEventListener('click', function() {
+            const keyInput = index === 0 ? decryptKey : decryptPhrase;
+            toggleKeyLock(keyInput, this);
+        });
+    });
+    
+    // Initialisation du compteur de caractères
+    updateCharCount();
 });

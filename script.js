@@ -1,52 +1,47 @@
-// Sélection des éléments DOM
+// Sélection des éléments DOM nécessaires pour le cryptage
 const inputText = document.getElementById('inputText');
-const outputText = document.getElementById('outputText');
+const fileInput = document.getElementById('fileInput');
 const cryptKey = document.getElementById('cryptKey');
-const charCount = document.getElementById('charCount');
-const encryptButton = document.getElementById('encryptButton');
-const copyButton = document.getElementById('copyButton');
-const keyLock = document.getElementById('keyLock');
+const phraseCrypter = document.getElementById('phraseCrypter');
+const outputText = document.getElementById('outputText');
 const usedPhrase = document.getElementById('usedPhrase');
 const usedKey = document.getElementById('usedKey');
-const phraseCrypter = document.getElementById('phraseCrypter'); 
+const copyButton = document.getElementById('copyButton');
+const charCount = document.getElementById('charCount');
 
-// partie fichier a crypter//
-const textArea = document.getElementById('inputText');
-const fileInput = document.getElementById('fileInput');
-const shift = document.getElementById('cryptKey').value;
-const phrase = document.getElementById('phraseCrypter').value;
-const output = document.getElementById('outputText');
-
-let isKeyLocked = false;
-
-function updateCharCount() {
-    const count = inputText.value.length;
-    charCount.textContent = count;
-}
-
+// Fonction pour le chiffrement César
 function caesarCipher(text, shift) {
     shift = parseInt(shift, 10);
     if (isNaN(shift)) {
-        alert("Le chiffre de cryptage doit être un nombre valide.");
+        alert("Le chiffre de cryptage doit être un nombre.");
         return "";
     }
-    shift = shift % 26;
+    
+    // S'assurer que le décalage reste entre 0 et 25
+    shift = ((shift % 26) + 26) % 26;
 
     return text.split('').map(char => {
         const code = char.charCodeAt(0);
+        
+        // Lettres majuscules (A-Z)
         if (code >= 65 && code <= 90) {
             return String.fromCharCode(((code - 65 + shift) % 26) + 65);
-        } else if (code >= 97 && code <= 122) {
+        } 
+        // Lettres minuscules (a-z)
+        else if (code >= 97 && code <= 122) {
             return String.fromCharCode(((code - 97 + shift) % 26) + 97);
-        } else {
+        } 
+        // Autres caractères inchangés
+        else {
             return char;
         }
     }).join('');
 }
 
+// Fonction pour le chiffrement Vigenère améliorée
 function vigenereCipher(text, key) {
-    if (!key) {
-        alert("Veuillez entrer une phrase de cryptage.");
+    if (!key || key.trim() === "") {
+        alert("Veuillez entrer une phrase de cryptage valide.");
         return "";
     }
 
@@ -54,44 +49,83 @@ function vigenereCipher(text, key) {
     for (let i = 0; i < text.length; i++) {
         const charCode = text.charCodeAt(i);
         const keyCharCode = key.charCodeAt(i % key.length);
+        
+        // Méthode de chiffrement plus robuste
         const encryptedCharCode = (charCode + keyCharCode) % 256;
         result += String.fromCharCode(encryptedCharCode);
     }
     return result;
 }
 
-function encryptText() {
+// Fonction pour gérer le cryptage (texte ou fichier)
+function encrypt() {
     const text = inputText.value.trim();
+    const file = fileInput.files[0];
     const shift = cryptKey.value.trim();
-    const phrase = phraseCrypter ? phraseCrypter.value.trim() : "";
-    let result;
-
-    if (!text) {
-        alert("Veuillez entrer un texte à crypter.");
-        return;
-    }
-
-    // ❌ Empêcher l'utilisation des deux clés en même temps
+    const phrase = phraseCrypter.value.trim();
+    
+    // Vérifier qu'une seule méthode de cryptage est utilisée
     if (shift && phrase) {
-        alert("Veuillez utiliser uniquement une seule clé de cryptage : soit un chiffre, soit une phrase, mais pas les deux.🙂");
+        alert("Veuillez utiliser soit le chiffrement César (chiffre), soit Vigenère (phrase), mais pas les deux.");
         return;
     }
-
-    if (phrase) {
-        result = vigenereCipher(text, phrase);
-        usedKey.textContent = phrase;
-    } else if (shift) {
-        result = caesarCipher(text, shift);
-        usedKey.textContent = shift;
-    } else {
-        alert("Veuillez entrer une clé de cryptage (chiffre ou phrase).");
+    
+    // Vérifier qu'au moins une méthode de cryptage est sélectionnée
+    if (!shift && !phrase) {
+        alert("Veuillez fournir une clé de chiffrement (chiffre ou phrase).");
         return;
     }
-
-    outputText.value = result;
-    usedPhrase.textContent = text;
+    
+    // Vérifier qu'au moins une source de texte est utilisée, mais pas les deux
+    if (text && file) {
+        alert("Veuillez choisir une seule source : soit entrer du texte, soit charger un fichier.");
+        return;
+    }
+    
+    if (!text && !file) {
+        alert("Veuillez entrer du texte ou sélectionner un fichier à crypter.");
+        return;
+    }
+    
+    // Cryptage à partir du texte saisi
+    if (text) {
+        let encrypted = "";
+        if (phrase) {
+            encrypted = vigenereCipher(text, phrase);
+            usedKey.textContent = phrase;
+        } else {
+            encrypted = caesarCipher(text, shift);
+            usedKey.textContent = shift;
+        }
+        
+        outputText.value = encrypted;
+        usedPhrase.textContent = "Texte saisi"; // Indiquer la source
+    }
+    
+    // Cryptage à partir du fichier
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const fileContent = e.target.result;
+            let encrypted = "";
+            
+            if (phrase) {
+                encrypted = vigenereCipher(fileContent, phrase);
+                usedKey.textContent = phrase;
+            } else {
+                encrypted = caesarCipher(fileContent, shift);
+                usedKey.textContent = shift;
+            }
+            
+            outputText.value = encrypted;
+            usedPhrase.textContent = file.name; // Afficher le nom du fichier utilisé
+        };
+        
+        reader.readAsText(file);
+    }
 }
 
+// Fonction pour copier le texte crypté dans le presse-papiers
 function copyToClipboard() {
     if (!outputText.value) {
         alert("Aucun texte crypté à copier.");
@@ -103,124 +137,15 @@ function copyToClipboard() {
     window.getSelection().removeAllRanges();
 
     const originalText = copyButton.textContent;
-    copyButton.textContent = "✓";
+    copyButton.textContent = "✓ Copié!";
     setTimeout(() => {
         copyButton.textContent = originalText;
     }, 1500);
 }
 
-function toggleKeyLock() {
-    isKeyLocked = !isKeyLocked;
-    cryptKey.disabled = isKeyLocked;
-
-    if (isKeyLocked) {
-        keyLock.textContent = "🔒";
-        keyLock.title = "Déverrouiller le chiffre";
-    } else {
-        keyLock.textContent = "🔓";
-        keyLock.title = "Verrouiller le chiffre";
-    }
-}
-
-inputText.addEventListener('input', updateCharCount);
-encryptButton.addEventListener('click', encryptText);
-copyButton.addEventListener('click', copyToClipboard);
-keyLock.addEventListener('click', toggleKeyLock);
-
-updateCharCount();
-
-
-
-                                                               //partie pour deposer un fichier .txt//
-function caesarCipher(text, shift) {
-    shift = parseInt(shift, 10);
-    if (isNaN(shift)) {
-        alert("Le chiffre de cryptage doit être un nombre.");
-        return "";
-    }
-    shift = shift % 26;
-
-    return text.split('').map(char => {
-        const code = char.charCodeAt(0);
-        if (code >= 65 && code <= 90) {
-            return String.fromCharCode(((code - 65 + shift) % 26) + 65);
-        } else if (code >= 97 && code <= 122) {
-            return String.fromCharCode(((code - 97 + shift) % 26) + 97);
-        } else {
-            return char;
-        }
-    }).join('');
-}
-
-function vigenereCipher(text, key) {
-    if (!key) {
-        alert("Veuillez entrer une phrase de cryptage.");
-        return "";
-    }
-
-    let result = "";
-    for (let i = 0; i < text.length; i++) {
-        const charCode = text.charCodeAt(i);
-        const keyCharCode = key.charCodeAt(i % key.length);
-        result += String.fromCharCode((charCode + keyCharCode) % 256);
-    }
-    return result;
-}
-
-function encryptFromInputOrFile() {
-    // Ne pas autoriser les deux méthodes de chiffrement à la fois
-    if (shift && phrase) {
-        alert("Veuillez utiliser soit le chiffrement César soit Vigenère, pas les deux.");
-        return;
-    }
-
-    // Vérifie source de texte : manuel ou fichier
-    const manualText = textArea.value.trim();
-    const file = fileInput.files[0];
-
-    if (!manualText && !file) {
-        alert("Veuillez entrer un texte ou charger un fichier.");
-        return;
-    }
-
-    // Si manuel : utiliser directement
-    if (manualText) {
-        let encrypted = "";
-        if (phrase) {
-            encrypted = vigenereCipher(manualText, phrase);
-        } else if (shift) {
-            encrypted = caesarCipher(manualText, shift);
-        } else {
-            alert("Veuillez fournir une clé de chiffrement.");
-            return;
-        }
-        output.value = encrypted;
-    }
-
-    // Si fichier : lire puis chiffrer
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const fileContent = e.target.result;
-            let encrypted = "";
-
-            if (phrase) {
-                encrypted = vigenereCipher(fileContent, phrase);
-            } else if (shift) {
-                encrypted = caesarCipher(fileContent, shift);
-            } else {
-                alert("Veuillez fournir une clé de chiffrement.");
-                return;
-            }
-
-            output.value = encrypted;
-        };
-        reader.readAsText(file);
-    }
-}
-
+// Fonction pour télécharger le texte crypté comme fichier
 function downloadEncryptedFile() {
-    const text = document.getElementById('outputText').value;
+    const text = outputText.value;
     if (!text) {
         alert("Aucun texte chiffré à télécharger.");
         return;
@@ -231,6 +156,37 @@ function downloadEncryptedFile() {
     const a = document.createElement("a");
     a.href = url;
     a.download = "texte_chiffre.txt";
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     URL.revokeObjectURL(url);
+}
+
+// Ajout des écouteurs d'événements
+document.querySelector('button[onclick="encryptFromInputOrFile()"]').addEventListener('click', encrypt);
+document.getElementById('encryptButton').addEventListener('click', encrypt);
+copyButton.addEventListener('click', copyToClipboard);
+document.querySelector('button[onclick="downloadEncryptedFile()"]').addEventListener('click', downloadEncryptedFile);
+
+// Ajouter des écouteurs pour effacer l'autre source lors de la saisie
+inputText.addEventListener('input', function() {
+    // Si on saisit du texte, effacer le fichier sélectionné
+    if (this.value.trim() !== '') {
+        fileInput.value = '';
+    }
+    updateCharCount();
+});
+
+fileInput.addEventListener('change', function() {
+    // Si on sélectionne un fichier, effacer le texte saisi
+    if (this.files.length > 0) {
+        inputText.value = '';
+        updateCharCount();
+    }
+});
+
+// Mise à jour du compteur de caractères
+function updateCharCount() {
+    const count = inputText.value.length;
+    charCount.textContent = count;
 }
