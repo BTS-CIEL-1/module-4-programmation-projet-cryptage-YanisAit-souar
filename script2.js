@@ -117,15 +117,18 @@ function handleFileUpload(e) {
         // Afficher le nom du fichier dans la section d'informations
         usedPhrase.textContent = file.name;
         
-        // S'assurer que les champs de décryptage sont activés
-        decryptKey.disabled = false;
-        decryptPhrase.disabled = false;
+        // Débloquer FORCÉMENT les champs de saisie
+        if (decryptKey.disabled) {
+            decryptKey.disabled = false;
+            document.querySelectorAll('.key-btn')[0].textContent = "🔓";
+            document.querySelectorAll('.key-btn')[0].title = "Verrouiller";
+        }
         
-        // Mettre à jour l'apparence des boutons de verrouillage
-        document.querySelectorAll('.key-btn').forEach(btn => {
-            btn.textContent = "🔓";
-            btn.title = "Verrouiller";
-        });
+        if (decryptPhrase.disabled) {
+            decryptPhrase.disabled = false;
+            document.querySelectorAll('.key-btn')[1].textContent = "🔓";
+            document.querySelectorAll('.key-btn')[1].title = "Verrouiller";
+        }
         
         alert("Fichier chargé avec succès : " + file.name);
     };
@@ -166,15 +169,17 @@ function updateCharCount() {
 
 // Fonction pour verrouiller/déverrouiller les champs de clé
 function toggleKeyLock(keyInput, lockButton) {
-    const isLocked = keyInput.disabled;
-    keyInput.disabled = !isLocked;
+    // On inverse l'état actuel du champ
+    const newState = !keyInput.disabled;
+    keyInput.disabled = newState;
     
-    if (isLocked) {
-        lockButton.textContent = "🔓";
-        lockButton.title = "Verrouiller";
-    } else {
+    // Mise à jour de l'icône du bouton
+    if (newState) { // Si maintenant verrouillé
         lockButton.textContent = "🔒";
         lockButton.title = "Déverrouiller";
+    } else { // Si maintenant déverrouillé
+        lockButton.textContent = "🔓";
+        lockButton.title = "Verrouiller";
     }
 }
 
@@ -201,18 +206,23 @@ window.addEventListener('DOMContentLoaded', () => {
     // Écouteur pour le compteur de caractères
     encryptedText.addEventListener('input', updateCharCount);
     
-    // Écouteurs pour les boutons de verrouillage
+    // Correction du problème avec les boutons de verrouillage (IDs dupliqués dans HTML)
     const keyLockButtons = document.querySelectorAll('.key-btn');
-    keyLockButtons.forEach((button, index) => {
-        button.addEventListener('click', function() {
-            // Index 0 correspond au premier bouton (chiffre César)
-            // Index 1 correspond au deuxième bouton (phrase Vigenère)
-            const keyInput = index === 0 ? decryptKey : decryptPhrase;
-            toggleKeyLock(keyInput, this);
-        });
-    });
     
-    // S'assurer que les champs de décryptage sont déverrouillés au chargement
+    // Assigner des gestionnaires d'événements distincts à chaque bouton
+    if (keyLockButtons.length >= 1) {
+        keyLockButtons[0].addEventListener('click', function() {
+            toggleKeyLock(decryptKey, this);
+        });
+    }
+    
+    if (keyLockButtons.length >= 2) {
+        keyLockButtons[1].addEventListener('click', function() {
+            toggleKeyLock(decryptPhrase, this);
+        });
+    }
+    
+    // Forcer le déverrouillage des champs au chargement initial
     decryptKey.disabled = false;
     decryptPhrase.disabled = false;
     
