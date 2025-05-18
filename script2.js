@@ -116,6 +116,17 @@ function handleFileUpload(e) {
         fileContent = event.target.result;
         // Afficher le nom du fichier dans la section d'informations
         usedPhrase.textContent = file.name;
+        
+        // S'assurer que les champs de décryptage sont activés
+        decryptKey.disabled = false;
+        decryptPhrase.disabled = false;
+        
+        // Mettre à jour l'apparence des boutons de verrouillage
+        document.querySelectorAll('.key-btn').forEach(btn => {
+            btn.textContent = "🔓";
+            btn.title = "Verrouiller";
+        });
+        
         alert("Fichier chargé avec succès : " + file.name);
     };
     reader.onerror = function() {
@@ -194,10 +205,16 @@ window.addEventListener('DOMContentLoaded', () => {
     const keyLockButtons = document.querySelectorAll('.key-btn');
     keyLockButtons.forEach((button, index) => {
         button.addEventListener('click', function() {
+            // Index 0 correspond au premier bouton (chiffre César)
+            // Index 1 correspond au deuxième bouton (phrase Vigenère)
             const keyInput = index === 0 ? decryptKey : decryptPhrase;
             toggleKeyLock(keyInput, this);
         });
     });
+    
+    // S'assurer que les champs de décryptage sont déverrouillés au chargement
+    decryptKey.disabled = false;
+    decryptPhrase.disabled = false;
     
     // Initialisation du compteur de caractères
     updateCharCount();
