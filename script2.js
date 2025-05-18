@@ -91,10 +91,10 @@ function decryptText() {
     let result = "";
     if (vigenereKey) {
         result = vigenereDecrypt(textToDecrypt, vigenereKey);
-        usedKey.textContent = vigenereKey;
+        usedKey.textContent = "Phrase: " + vigenereKey;
     } else {
         result = caesarDecrypt(textToDecrypt, caesarShift);
-        usedKey.textContent = caesarShift;
+        usedKey.textContent = "Chiffre: " + caesarShift;
     }
     
     // Afficher le résultat et mettre à jour les informations
@@ -191,7 +191,7 @@ window.addEventListener('DOMContentLoaded', () => {
     encryptedText.addEventListener('input', updateCharCount);
     
     // Écouteurs pour les boutons de verrouillage
-    const keyLockButtons = document.querySelectorAll('#keyLock');
+    const keyLockButtons = document.querySelectorAll('.key-btn');
     keyLockButtons.forEach((button, index) => {
         button.addEventListener('click', function() {
             const keyInput = index === 0 ? decryptKey : decryptPhrase;
