@@ -1,3 +1,7 @@
+// Version ultra simplifiée pour résoudre définitivement le problème
+// Tous les systèmes de verrouillage sont supprimés
+// Le HTML sera manipulé directement pour contourner les problèmes
+
 // Sélection des éléments DOM
 const encryptedText = document.getElementById('encryptedText');
 const fileInput = document.getElementById('fileInput');
@@ -11,10 +15,6 @@ const charCount = document.getElementById('charCount');
 // Variable pour stocker le contenu du fichier
 let fileContent = "";
 
-// CORRECTION POUR TOUJOURS PERMETTRE L'ÉDITION DES CLÉS
-// Suppression complète des fonctions de verrouillage/déverrouillage
-// Les champs seront TOUJOURS accessibles
-
 // Déchiffrement César
 function caesarDecrypt(text, shift) {
     shift = parseInt(shift, 10);
@@ -23,17 +23,16 @@ function caesarDecrypt(text, shift) {
         return "";
     }
     
-    // Normaliser le décalage pour qu'il soit toujours positif
     shift = ((shift % 26) + 26) % 26;
     
     return text.split('').map(char => {
         const code = char.charCodeAt(0);
-        if (code >= 65 && code <= 90) { // Lettres majuscules
+        if (code >= 65 && code <= 90) {
             return String.fromCharCode(((code - 65 - shift + 26) % 26) + 65);
-        } else if (code >= 97 && code <= 122) { // Lettres minuscules
+        } else if (code >= 97 && code <= 122) {
             return String.fromCharCode(((code - 97 - shift + 26) % 26) + 97);
         } else {
-            return char; // Caractères non alphabétiques
+            return char;
         }
     }).join('');
 }
@@ -49,7 +48,6 @@ function vigenereDecrypt(text, key) {
     for (let i = 0; i < text.length; i++) {
         const charCode = text.charCodeAt(i);
         const keyCharCode = key.charCodeAt(i % key.length);
-        // Ajout de 256 pour éviter les nombres négatifs
         const decryptedCharCode = (charCode - keyCharCode + 256) % 256;
         result += String.fromCharCode(decryptedCharCode);
     }
@@ -58,40 +56,43 @@ function vigenereDecrypt(text, key) {
 
 // Fonction principale de décryptage
 function decryptText() {
+    // S'assurer que les champs sont actifs
+    decryptKey.disabled = false;
+    decryptPhrase.disabled = false;
+    
     const textFromInput = encryptedText.value.trim();
     const caesarShift = decryptKey.value.trim();
     const vigenereKey = decryptPhrase.value.trim();
     
-    // Déterminer la source du texte à décrypter (champ de texte ou fichier)
+    // Déterminer la source du texte
     let textToDecrypt = "";
     let sourceInfo = "";
     
     if (fileContent && fileInput.files[0]) {
         textToDecrypt = fileContent;
-        sourceInfo = fileInput.files[0].name; // Nom du fichier
+        sourceInfo = fileInput.files[0].name;
     } else if (textFromInput) {
         textToDecrypt = textFromInput;
         sourceInfo = textFromInput.length > 30 ? 
                      textFromInput.substring(0, 30) + "..." : 
-                     textFromInput; // Affiche les 30 premiers caractères du texte
+                     textFromInput;
     } else {
         alert("Veuillez entrer un texte ou charger un fichier à décrypter.");
         return;
     }
     
-    // Vérifier qu'une seule méthode de décryptage est utilisée
+    // Vérifier les clés
     if (caesarShift && vigenereKey) {
         alert("Veuillez utiliser une seule méthode de décryptage à la fois (chiffre ou phrase).");
         return;
     }
     
-    // Vérifier qu'au moins une méthode de décryptage est spécifiée
     if (!caesarShift && !vigenereKey) {
         alert("Veuillez fournir une clé de décryptage (chiffre ou phrase).");
         return;
     }
     
-    // Effectuer le décryptage approprié
+    // Effectuer le décryptage
     let result = "";
     if (vigenereKey) {
         result = vigenereDecrypt(textToDecrypt, vigenereKey);
@@ -101,7 +102,7 @@ function decryptText() {
         usedKey.textContent = "Chiffre: " + caesarShift;
     }
     
-    // Afficher le résultat et mettre à jour les informations
+    // Afficher le résultat
     decryptedOutput.value = result;
     usedPhrase.textContent = sourceInfo;
 }
@@ -111,26 +112,45 @@ function handleFileUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
     
-    // Effacer le texte saisi manuellement
     encryptedText.value = "";
     updateCharCount();
     
     const reader = new FileReader();
     reader.onload = function(event) {
         fileContent = event.target.result;
-        // Afficher le nom du fichier dans la section d'informations
         usedPhrase.textContent = file.name;
         
-        // IMPORTANT: S'assurer que les champs sont TOUJOURS accessibles
+        // Réinitialiser les champs de clé (important)
         decryptKey.disabled = false;
         decryptPhrase.disabled = false;
         
-        // Cacher les boutons de verrouillage qui causent des problèmes
+        // Suppression de tous les boutons de verrouillage
         document.querySelectorAll('.key-btn').forEach(btn => {
-            btn.style.display = 'none';
+            btn.remove(); // On les supprime complètement du DOM
         });
         
-        alert("Fichier chargé avec succès : " + file.name + "\nVous pouvez maintenant entrer votre clé de décryptage (chiffre ou phrase).");
+        // Création de nouveaux inputs pour remplacer ceux qui posent problème
+        const newDecryptKey = document.createElement('input');
+        newDecryptKey.type = 'number';
+        newDecryptKey.id = 'decryptKey';
+        newDecryptKey.min = '1';
+        newDecryptKey.value = decryptKey.value || '2';
+        
+        const newDecryptPhrase = document.createElement('input');
+        newDecryptPhrase.type = 'text';
+        newDecryptPhrase.id = 'decryptPhrase';
+        newDecryptPhrase.placeholder = 'Entrez une phrase de décryptage';
+        newDecryptPhrase.value = decryptPhrase.value || '';
+        
+        // Remplacer les anciens inputs
+        decryptKey.parentNode.replaceChild(newDecryptKey, decryptKey);
+        decryptPhrase.parentNode.replaceChild(newDecryptPhrase, decryptPhrase);
+        
+        // Mettre à jour les références
+        window.decryptKey = newDecryptKey;
+        window.decryptPhrase = newDecryptPhrase;
+        
+        alert("Fichier chargé: " + file.name + "\nVous pouvez maintenant entrer votre clé de décryptage.");
     };
     reader.onerror = function() {
         alert("Erreur lors de la lecture du fichier.");
@@ -152,28 +172,24 @@ function copyDecryptedText() {
     document.execCommand('copy');
     window.getSelection().removeAllRanges();
     
-    // Feedback visuel
     const copyBtn = document.querySelector('.copy-btn');
-    const originalText = copyBtn.textContent;
     copyBtn.textContent = "✓";
     setTimeout(() => {
-        copyBtn.textContent = originalText;
+        copyBtn.textContent = "📋";
     }, 1500);
 }
 
-// Fonction pour mettre à jour le compteur de caractères
+// Mise à jour du compteur de caractères
 function updateCharCount() {
-    const count = encryptedText.value.length;
-    charCount.textContent = count;
+    charCount.textContent = encryptedText.value.length;
 }
 
-// Réinitialiser le contenu du fichier quand on écrit du texte
+// Événement pour réinitialiser le fichier quand on change le texte
 encryptedText.addEventListener('input', function() {
     if (this.value.trim() !== '') {
         fileInput.value = '';
         fileContent = "";
         
-        // Mettre à jour la section d'informations avec le texte saisi
         const textPreview = this.value.trim();
         usedPhrase.textContent = textPreview.length > 30 ? 
                                textPreview.substring(0, 30) + "..." : 
@@ -182,24 +198,27 @@ encryptedText.addEventListener('input', function() {
     updateCharCount();
 });
 
-// Écouteurs d'événements
-window.addEventListener('DOMContentLoaded', () => {
+// Fonction d'initialisation exécutée au chargement de la page
+window.onload = function() {
+    // Supprimer tous les boutons de verrouillage existants
+    document.querySelectorAll('.key-btn').forEach(btn => {
+        btn.remove();
+    });
+    
+    // S'assurer que les champs sont toujours actifs
+    decryptKey.disabled = false;
+    decryptPhrase.disabled = false;
+    
     // Écouteur pour le chargement de fichier
     fileInput.addEventListener('change', handleFileUpload);
     
     // Écouteur pour le compteur de caractères
     encryptedText.addEventListener('input', updateCharCount);
     
-    // SUPPRESSION DU SYSTÈME DE VERROUILLAGE QUI CAUSE TROP DE PROBLÈMES
-    // Cacher tous les boutons de verrouillage
-    document.querySelectorAll('.key-btn').forEach(btn => {
-        btn.style.display = 'none';
-    });
-    
-    // S'assurer que les champs sont TOUJOURS accessibles
-    decryptKey.disabled = false;
-    decryptPhrase.disabled = false;
-    
-    // Initialisation du compteur de caractères
+    // Réinitialiser le compteur
     updateCharCount();
-});
+    
+    // Exposer decryptText globalement pour l'appel onclick depuis HTML
+    window.decryptText = decryptText;
+    window.copyDecryptedText = copyDecryptedText;
+};
