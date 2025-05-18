@@ -1,18 +1,29 @@
 {
-  "name": "spacex",
+  "name": "cryptage-app",
   "version": "1.0.0",
-  "description": "HTML/CSS/JS SpaceX website clone project from the [YouTube tutorial](https://www.youtube.com/watch?v=wryPX7KSwSc). It is not the entire website, but the homepage, a few inner pages with the CSS animations, mobile menu and the JavaScript countdown effect.",
-  "main": "index.js",
+  "description": "Application de cryptage basée sur le projet GitHub",
+  "main": "main.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "start": "electron .",
+    "dist": "electron-builder"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Yanis Ait Souar",
+  "license": "MIT",
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "electron": "^29.0.0",
+    "electron-builder": "^24.0.0"
   },
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "build": {
+    "appId": "com.exemple.cryptage",
+    "productName": "CryptageApp",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    }
   }
 }
